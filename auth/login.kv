@@ -1,0 +1,53 @@
+<Login>:
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: "assets/images/login_background.png"
+    MDFlatButton:
+        text: app.lang["Just Browsing!"]
+        text_color: 0.6, 0.6, 0, 1
+        theme_text_color: "Custom"
+        font_style: "Overline"
+        pos_hint: {'right': 1, 'top': 1}
+        font_size: sp(13)
+        on_release: app.root.current = "home"
+
+    MDBoxLayout:
+        id: name_box
+        orientation: "vertical"
+        spacing: dp(35)
+        padding: dp(25)
+        pos_hint: {'center_y': 0.56}
+        size_hint: 1, None
+        adaptive_height: True
+
+        MDTextField:
+            id: username
+            mode: "round"
+            hint_text: app.lang["username"]
+            icon_right: "account-outline"
+            next: password
+
+        MDTextField:
+            id: password
+            password: True
+            mode: "round"
+            hint_text: app.lang["password"]
+            icon_right: "account-key-outline"
+            next: lambda x: root.login(username.text, password.text)
+
+        MDBoxLayout:
+            size_hint: 1, None
+            padding: dp(10)
+            height: dp(40)
+            MDRectangleFlatButton:
+                text: app.lang["Login"]
+                on_release: root.login(username.text, password.text)
+
+            MDFlatButton:
+                text: app.lang["Sign-Up"]
+                disabled: True
+

@@ -1,0 +1,107 @@
+#:import ItemDisplayLine uix.ItemDisplayLine
+#:import reform arabickivy.reform
+#:import break_lines arabickivy.break_lines
+
+<EditItemScreen>:
+    AsyncImage:
+        id: background_img
+        source: root.image
+        pos_hint: {"top": 1}
+        size_hint: 1, None
+        allow_stretch: True
+        keep_ratio: False
+        height: root.height - content.height
+
+    MDCard:
+        center_x: background_img.center_x
+        y: background_img.center_y
+        size_hint: None, None
+        size: dp(80), dp(80)
+        ripple_behavior: True
+        radius: dp(20)
+        elevation: 2
+        on_release:
+            root.choose_image()
+        FitImage:
+            source: root.image
+            radius: dp(20)
+    MDBoxLayout:
+        size_hint: 0.8, None
+        center_x: background_img.center_x
+        top: background_img.center_y
+        adaptive_height: True
+        spacing: dp(20)
+        MDTextField:
+            id: category_field
+            hint_text: app.lang["Category"]
+            halign: "right"
+            keyboard_suggestions: ["Nothing", "shoes"]
+            on_focus:
+                if self.focus: root.menu.open()
+                if not self.focus: root.menu.dismiss()
+            on_text:
+                root.filter_categories(self.text)
+        MDTextField:
+            hint_text: app.lang["Name"]
+            halign: "right"
+
+    MDBoxLayout:
+        id: content
+        orientation: "vertical"
+        size_hint: 1, None
+        padding: "12dp"
+        spacing: "12dp"
+        adaptive_height: True
+        MDBoxLayout:
+            size_hint: 1, None
+            height: dp(60)
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                pos_hint: {"bottom": 0}
+                MDTextField:
+                    size_hint: None, None
+                    size:  dp(50), dp(20)
+                    pos_hint: {"center_x": 0.5}
+                    halign: "center"
+                MDLabel:
+                    text: app.lang['Units In Stock']
+                    pos_hint: {"center_x": 0.5}
+                    halign: "center"
+                    adaptive_size: True
+            MDSeparator:
+                orientation: "vertical"
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                pos_hint: {"bottom": 0}
+                MDTextField:
+                    size_hint: None, None
+                    size:  dp(70), dp(20)
+                    pos_hint: {"center_x": 0.5}
+                    halign: "center"
+                MDLabel:
+                    text: app.lang['Price in SDG']
+                    pos_hint: {"center_x": 0.5}
+                    halign: "center"
+                    adaptive_size: True
+
+        MDCard:
+            size_hint: 1, None
+            orientation: "vertical"
+            adaptive_height: True
+            padding: dp(15)
+            spacing: dp(10)
+            MDLabel:
+                text: app.lang["Description"] + ":"
+                size_hint: 1, None
+                halign: "right"
+                height: dp(20)
+            MDTextField:
+                id: description
+                text: break_lines(root.description, root.width, self.font_size)
+                mode: "rectangle"
+                size_hint: 1, None
+                multiline: True
+                halign: "right"
+                adaptive_width: True

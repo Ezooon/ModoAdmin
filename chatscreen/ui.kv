@@ -1,0 +1,73 @@
+#:import ChatBubble uix.ChatBubble
+#:import ReceivedBubble uix.ReceivedBubble
+#:import CartBubble uix.CartBubble
+
+
+<ChatScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: self.theme_cls.bg_light
+        background: "assets/images/leather.jpg"
+        size_hint: 1, 1
+
+        MDBoxLayout:
+            id: toolbar
+            size_hint: 1, None
+            height: dp(60)
+            md_bg_color: self.theme_cls.bg_darkest
+            padding: dp(5)
+            spacing: dp(10)
+            MDIconButton:
+                icon: "arrow-left"
+                on_release:
+                    root.parent.current = "home"
+            MDLabel:
+                text: "Chat Room"
+                halign: "right"
+
+        MDRecycleView:
+            id: sv
+            key_viewclass: "viewclass"
+            bar_inactive_color: 1,1,1,0
+            bar_color: 1,1,1,0
+            data: root.data
+            scroll_timeout: 500
+            canvas.before:
+            MDRecycleGridLayout:
+                id: messages
+                orientation: "rl-tb"
+                size_hint: 1, None
+                cols: 1
+                adaptive_height: True
+                spacing: dp(25)
+                padding: dp(20)
+
+
+        MDBoxLayout:
+            adaptive_height: True
+            padding: dp(10), dp(5), dp(10), dp(10),
+            spacing: dp(10)
+            md_bg_color: self.theme_cls.bg_normal
+            MDIconButton:
+                id: menu_button
+                icon: "dots-vertical"
+                pos_hint: {'center_y': 0.5}
+                on_press:
+                    root.menu.open()
+            MDTextField:
+                id: text_field
+                size_hint: 1, None
+                halign: "right"
+                height: dp(20)
+                mode: "rectangle"
+                multiline: True
+                next: root.send
+            MDIconButton:
+                id: send_button
+                icon: "send"
+                pos_hint: {'center_y': 0.5}
+                theme_icon_color: "Custom"
+                icon_color: rgba("#ffd700")
+                on_release:
+                    root.send(text_field)
+

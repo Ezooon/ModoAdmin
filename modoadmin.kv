@@ -1,0 +1,71 @@
+#:import Home home.Home
+#:import Login auth.Login
+#:import ChatScreen chatscreen.ChatScreen
+#:import ItemScreen itemscreen.ItemScreen
+#:import EditItemScreen edititemscreen.EditItemScreen
+#:import FavoriteScreen favoritescreen.FavoriteScreen
+#:import ItemGridScreen itemgridscreen.ItemGridScreen
+
+<SM>:
+    MDScreen:
+        id: splash
+        Image:
+            source: "assets/images/Modo Logo.png" if app.theme_cls.theme_style == "Dark" else "assets/images/Modo Logo_w.png"
+            allow_stretch: True
+            keep_ratio: False
+        MDSpinner:
+            size: dp(49), dp(49)
+            size_hint: None, None
+            pos_hint: {"center_x": 0.5}
+            y: dp(100)
+    Home:
+        name: "home"
+    ItemScreen:
+        name: "item_screen"
+    EditItemScreen:
+        name: "edit_item_screen"
+    Login:
+        name: "login"
+    FavoriteScreen:
+        name: "favorite_screen"
+    ChatScreen:
+        name: "chat_screen"
+    ItemGridScreen:
+        name: "item_grid_screen"
+    MDScreen:
+        name: "about"
+        ScrollView:
+            size_hint: 1, 1
+            MDLabel:
+                markup: True
+                size_hint: None, None
+                adaptive_size: True
+                text: app.about
+                on_ref_press:
+                    app.open_url(args[1])
+
+        MDIconButton:
+            icon: "arrow-right"
+            top: root.top - dp(10)
+            right: root.width - dp(10)
+            on_release:
+                app.root.current = 'home'
+
+    MDScreen:
+        name: "privacy_policy"
+        ScrollView:
+            size_hint: 1, 1
+            MDLabel:
+                markup: True
+                size_hint: None, None
+                adaptive_size: True
+                text: app.privacy_policy
+                on_ref_press:
+                    app.open_url(args[1])
+
+        MDIconButton:
+            icon: "arrow-right"
+            top: root.top - dp(10)
+            right: root.width - dp(10)
+            on_release:
+                app.root.current = 'home'

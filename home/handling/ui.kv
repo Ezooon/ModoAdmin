@@ -1,0 +1,33 @@
+<HandlingTap>
+    text: app.lang["Handling"]
+    icon: "chat"
+    MDBoxLayout:
+        orientation: "vertical"
+        MDBoxLayout:
+            id: toolbar
+            size_hint: 1, None
+            height: dp(60)
+            md_bg_color: self.theme_cls.bg_dark
+            padding: dp(5)
+            spacing: dp(10)
+            MDLabel:
+                text: root.text
+                halign: "right"
+#            MDIconButton:
+#                icon: "message-text-outline"
+#                on_release:
+#                    app.chat_screen.chat = app.user.chat
+#                    app.root.current = "chat_screen"
+
+        MDRecycleView:
+            id: cart_list
+            size_hint: 1, 1
+            viewclass: "ChatCard"
+            data: root.data
+            MDRecycleGridLayout:
+                id: items_list
+                spacing: dp(10)
+                padding: dp(5), dp(10), dp(5), dp(10)
+                cols: 1
+                adaptive_height: True
+

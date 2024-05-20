@@ -1,0 +1,18 @@
+#:import MeTap home.me.MeTap
+#:import ShopTap home.shop.ShopTap
+#:import OrdersTap home.orders.OrdersTap
+#:import HandlingTap home.handling.HandlingTap
+
+
+<Home>:
+    MDBottomNavigation:
+        id: home_sm
+        HandlingTap:
+            id: handling
+            name: "Handling"
+        OrdersTap:
+            name: "Orders"
+        ShopTap:
+            name: "Shop"
+        MeTap:
+            name: "Me"

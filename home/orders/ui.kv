@@ -1,0 +1,41 @@
+#:import ChatCard uix.ChatCard
+
+<OrdersTap>:
+    text: app.lang["Orders"]
+    icon: "view-sequential-outline"
+    MDBoxLayout:
+        orientation: "vertical"
+        MDBoxLayout:
+            id: toolbar
+            size_hint: 1, None
+            height: dp(60)
+            md_bg_color: self.theme_cls.bg_dark
+            padding: dp(20), dp(5)
+            spacing: dp(10)
+            MDIconButton:
+                icon: "refresh"
+                on_release:
+                    root.load_chats()
+                    root.data = []
+            MDLabel:
+                text: root.text
+                halign: "right"
+
+        MDRecycleView:
+            id: recycle_view
+            size_hint: 1, 1
+            viewclass: "ChatCard"
+            data: root.data
+            on_scroll_y:
+                if self.scroll_y == 0: root.more_chats()
+
+            MDRecycleGridLayout:
+                id: chats_list
+                spacing: dp(10)
+                padding: dp(5), dp(10), dp(5), dp(10)
+                cols: 1
+                adaptive_height: True
+                on_children:
+                    if self.height < recycle_view.height: root.more_chats()
+
+

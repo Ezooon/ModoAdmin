@@ -1,0 +1,92 @@
+#:import ItemDisplayLine uix.ItemDisplayLine
+#:import reform arabickivy.reform
+#:import break_lines arabickivy.break_lines
+
+<ItemScreen>:
+    MDSliverAppbar:
+        id: appbar
+        background_color: root.background_color
+
+        MDSliverAppbarHeader:
+            MDRelativeLayout:
+                FitImage:
+                    id: image
+                    source: root.image
+
+        MDSliverAppbarContent:
+            id: content
+            orientation: "vertical"
+            padding: "12dp"
+            spacing: "12dp"
+            adaptive_height: True
+            MDBoxLayout:
+                size_hint: 1, None
+                height: dp(60)
+                MDLabel:
+                    text: str(root.stock) + '\n' + app.lang['Units In Stock']
+                    halign: "center"
+                MDSeparator:
+                    orientation: "vertical"
+                MDLabel:
+                    text: str(root.price) + ' SDG\n' + app.lang['per Units']
+                    halign: "center"
+
+            MDCard:
+                size_hint: 1, None
+                orientation: "vertical"
+                adaptive_height: True
+                padding: dp(15)
+                spacing: dp(10)
+                on_press:
+                    description.shorten = not description.shorten
+                MDLabel:
+                    text: app.lang["Description"] + ":"
+                    size_hint: 1, None
+                    halign: "right"
+                    height: dp(20)
+                MDLabel:
+                    id: description
+                    text: root.description if self.shorten else break_lines(root.description, root.width, self.font_size)
+                    size_hint: 1, None
+                    halign: "right"
+                    adaptive_height: True
+                    shorten: True
+                    shorten_from: "left"
+
+            ItemDisplayLine:
+                id: simular
+                size_hint: 1, None
+                height: 200
+                title: app.lang["Simular"]
+
+            ItemDisplayLine:
+                size_hint: 1, None
+                height: 200
+                title: app.lang["Also See"]
+
+
+    MDBoxLayout:
+        size_hint: 1, None
+        height: dp(60)
+        pos_hint: {"top": 1}
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {'center_y': 0.5}
+            on_release:
+                app.root.current = "home"
+        MDLabel:
+            id: title
+            text: app.lang["item"]
+            font_style: "H6"
+            halign: "right"
+            color: self.theme_cls.opposite_text_color
+            outline_color: self.theme_cls.text_color
+            outline_width: sp(1)
+            pos_hint: {'center_y': 0.5}
+        MDIconButton:
+            id: heart_button
+            icon: "heart-outline"
+            pos_hint: {'center_y': 0.5}
+            theme_text_color: "Custom"
+            on_release:
+                root.favorite()

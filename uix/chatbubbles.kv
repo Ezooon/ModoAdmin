@@ -1,0 +1,147 @@
+#:import Window kivy.core.window.Window
+#:import CartCard uix.CartCard
+
+
+<ChatBubble>:
+    size_hint: 1, None
+    adaptive_height: True
+    height: label.height + dp(20)
+    MDBoxLayout:
+        pos_hint: {'right': 1, "center_y": 0.5}
+        orientation: "vertical"
+        md_bg_color: "#ffd700"
+        radius: dp(10), 0, dp(10), dp(10)
+        padding: dp(10)
+        size_hint: None, None
+        adaptive_size: True
+        canvas.before:
+            Color:
+                rgba: rgba("#ffd700")
+            Triangle:
+                points: [self.right, self.top, self.right + dp(15), self.top, self.right, self.top - dp(15)]
+        MDLabel:
+            id: label
+            pos_hint: {"center_x": 0.5}
+            halign: "right"
+            size_hint: None, None
+            adaptive_height: True
+            adaptive_width: self.width < Window.width - dp(60)
+            allow_copy: True
+            width: self.width if self.width < Window.width - dp(60) else Window.width - dp(60)
+            text: root.text
+
+    MDBoxLayout:
+        right: root.right
+        top: root.y
+        size_hint: None, None
+        size: dp(100), dp(15)
+        spacing: dp(3)
+        MDLabel:
+            text: root.sent
+            halign: "right"
+            color: self.theme_cls.opposite_text_color
+            font_style: "Caption"
+            size_hint: 1, None
+            height: dp(10)
+            font_size: sp(10)
+            pos_hint: {"center_y": 0.5}
+        MDIcon:
+            icon: ["clock-outline", "check", "check-all", "check-all"][root.status]
+            font_size: dp(15)
+            pos_hint: {"center_y": 0.5}
+            color: self.theme_cls.opposite_text_color if root.status < 3 else self.theme_cls.accent_color
+
+
+<CartBubble>:
+    size_hint: 1, None
+    height: box.height
+    adaptive_height: True
+    MDBoxLayout:
+        id: box
+        pos_hint: {"center_y": 0.5}
+        x: dp(20)
+        orientation: "vertical"
+        padding:  dp(5), dp(10), dp(5), 0
+        spacing: dp(2)
+        size_hint: 0.7 if (Window.width * 0.7) > dp(300) else None, None
+        width: dp(300)
+        adaptive_height: True
+        canvas.before:
+            Color:
+                rgba: self.theme_cls.bg_darkest
+            Triangle:
+                points: [self.x - dp(15), self.top, self.x, self.top, self.x, self.top - dp(15)]
+
+            Color:
+                rgba: self.theme_cls.bg_darkest
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: 0, dp(10), dp(10), dp(10)
+
+        CartCard:
+            id: item_list
+            items: root.c_items
+            size_hint: 1, None
+    MDBoxLayout:
+        right: box.right
+        top: box.y
+        size_hint: None, None
+        size: dp(80), dp(15)
+        spacing: dp(3)
+        MDLabel:
+            text: root.sent
+            halign: "right"
+            color: self.theme_cls.opposite_text_color
+            font_style: "Caption"
+            size_hint: 1, None
+            height: dp(10)
+            font_size: sp(10)
+            pos_hint: {"center_y": 0.5}
+
+
+<ReceivedBubble>:
+    size_hint: 1, None
+    adaptive_height: True
+    height: label.height + dp(10)
+    MDBoxLayout:
+        id: box
+        pos_hint: {"center_y": 0.5}
+        x: dp(20)
+        orientation: "vertical"
+        md_bg_color: self.theme_cls.bg_darkest
+        radius: 0, dp(10), dp(10), dp(10)
+        padding: dp(10)
+        size_hint: None, None
+        adaptive_size: True
+        canvas.before:
+            Color:
+                rgba: self.theme_cls.bg_darkest
+            Triangle:
+                points: [self.x - dp(15), self.top, self.x, self.top, self.x, self.top - dp(15)]
+        MDLabel:
+            id: label
+            pos_hint: {"center_x": 0.5}
+            halign: "right"
+            size_hint: None, None
+            adaptive_height: True
+            adaptive_width: self.width < Window.width - dp(60)
+            allow_copy: True
+            width: self.width if self.width < Window.width - dp(60) else Window.width - dp(60)
+            text: root.text
+
+    MDBoxLayout:
+        right: box.right
+        top: box.y
+        size_hint: None, None
+        size: dp(80), dp(15)
+        spacing: dp(3)
+        MDLabel:
+            text: root.sent
+            halign: "right"
+            color: self.theme_cls.opposite_text_color
+            font_style: "Caption"
+            size_hint: 1, None
+            height: dp(10)
+            font_size: sp(10)
+            pos_hint: {"center_y": 0.5}

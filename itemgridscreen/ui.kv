@@ -1,0 +1,48 @@
+<ItemGridScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: self.theme_cls.bg_light
+        size_hint: 1, 1
+
+        MDBoxLayout:
+            id: toolbar
+            size_hint: 1, None
+            height: dp(60)
+            md_bg_color: self.theme_cls.bg_darkest
+            padding: dp(5), dp(5), dp(20), dp(5)
+            spacing: dp(10)
+            MDIconButton:
+                icon: "arrow-left"
+                on_release:
+                    root.parent.current = "home"
+            MDLabel:
+                text: root.title
+                halign: "right"
+
+        RecycleView:
+            id: recycle_view
+            viewclass: "ItemCard"
+            size_hint: 1, 1
+            bar_inactive_color: 1,1,1,0
+            bar_color: 1,1,1,0
+            data: root.data
+            scroll_timeout: 500
+            on_scroll_y:
+                if self.scroll_y == 0: root.more_items()
+            MDRecycleGridLayout:
+                id: content
+                orientation: "rl-tb"
+                size_hint: 1, None
+                cols: int(self.width // root.min_item_width)
+                adaptive_height: True
+                padding: dp(5)
+                spacing: dp(10)
+                on_children:
+                    if self.height < recycle_view.height: root.more_items()
+
+    MDSpinner:
+        id: spinner
+        active: False
+        size_hint: None, None
+        size: dp(50), dp(50)
+        pos_hint: {"center_y": 0.5, "center_x": 0.5}
