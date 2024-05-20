@@ -41,8 +41,11 @@ def break_lines(text, width, font_size=sp(20)):
         last_space = line.find(" ")
         if not text_size(line, font_size)[0] >= width:
             new_lines.append(line)
+            continue
+
         for i in range(line.count(" ")):
             next_space = line.find(" ", last_space + 1)
+            print(line[:next_space].count(" "), text_size(line[:next_space], font_size)[0], width)
             if text_size(line[:next_space], font_size)[0] >= width:
                 new_lines.append(line[:last_space])
                 lines.append(line[last_space:])

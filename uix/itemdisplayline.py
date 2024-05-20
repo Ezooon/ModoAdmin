@@ -56,13 +56,13 @@ Builder.load_string("""
                 root.favorite(self)
                 
         MDIconButton:
-            id: cart_button
             icon: "pencil"
             theme_text_color: "Custom"
             pos: 0, root.height - dp(48)
             md_bg_color: 0, 0 , 0 ,0.001
             on_release:
-                root.to_cart(self)
+                app.root.get_screen("edit_item_screen").item = root.item
+                app.root.current = "edit_item_screen"
 
 <ItemDisplayLine>:
     orientation: "vertical"

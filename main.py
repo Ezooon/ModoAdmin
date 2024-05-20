@@ -75,7 +75,7 @@ class ModoAdminApp(MDApp):
         # loading the to send Q
         self.send_list = Message.get_not_sent()
 
-        # self.theme_cls.theme_style = "Dark"
+        self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Amber"
         sm = SM()
 

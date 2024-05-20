@@ -28,22 +28,28 @@
     MDBoxLayout:
         size_hint: 0.8, None
         center_x: background_img.center_x
-        top: background_img.center_y
+        top: background_img.center_y - dp(10)
         adaptive_height: True
         spacing: dp(20)
+        padding: dp(10)
+        radius: dp(20)
+        md_bg_color: self.theme_cls.bg_dark[:3] + [0.7]
         MDTextField:
             id: category_field
             hint_text: app.lang["Category"]
             halign: "right"
             keyboard_suggestions: ["Nothing", "shoes"]
+            next: price_field
             on_focus:
                 if self.focus: root.menu.open()
                 if not self.focus: root.menu.dismiss()
             on_text:
                 root.filter_categories(self.text)
         MDTextField:
+            id: name_field
             hint_text: app.lang["Name"]
             halign: "right"
+            next: category_field
 
     MDBoxLayout:
         id: content
@@ -60,10 +66,13 @@
                 adaptive_height: True
                 pos_hint: {"bottom": 0}
                 MDTextField:
+                    id: stock_field
                     size_hint: None, None
                     size:  dp(50), dp(20)
                     pos_hint: {"center_x": 0.5}
                     halign: "center"
+                    input_filter: "int"
+                    next: description_field
                 MDLabel:
                     text: app.lang['Units In Stock']
                     pos_hint: {"center_x": 0.5}
@@ -76,10 +85,13 @@
                 adaptive_height: True
                 pos_hint: {"bottom": 0}
                 MDTextField:
+                    id: price_field
                     size_hint: None, None
                     size:  dp(70), dp(20)
                     pos_hint: {"center_x": 0.5}
                     halign: "center"
+                    input_filter: "float"
+                    next: stock_field
                 MDLabel:
                     text: app.lang['Price in SDG']
                     pos_hint: {"center_x": 0.5}
@@ -98,10 +110,25 @@
                 halign: "right"
                 height: dp(20)
             MDTextField:
-                id: description
-                text: break_lines(root.description, root.width, self.font_size)
+                id: description_field
                 mode: "rectangle"
                 size_hint: 1, None
                 multiline: True
                 halign: "right"
                 adaptive_width: True
+
+    MDIconButton:
+        icon: "content-save-outline"
+        right: root.right - dp(10)
+        top: root.top - dp(10)
+        md_bg_color: self.theme_cls.bg_dark[:3] + [0.7]
+        on_release:
+            root.save()
+
+    MDIconButton:
+        icon: "arrow-left"
+        x: dp(10)
+        top: root.top - dp(10)
+        md_bg_color: self.theme_cls.bg_dark[:3] + [0.7]
+        on_release:
+            app.root.current = "home"

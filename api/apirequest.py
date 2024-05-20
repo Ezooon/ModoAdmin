@@ -25,12 +25,13 @@ def api_request(url, on_success, full_url="", params={}, on_failure=requests_fai
         headers = {'Authorization': 'Token '+login, **heads}
 
     if body:
-        body = json.dumps(body, indent=4)
         heads = headers or {}
-        headers = {**heads,
-                   'Content-Type': 'Application/json',
-                   'Content-length': len(body)
-                   }
+        headers = heads
+        if not headers.get("Content-type"):
+            body = json.dumps(body, indent=4)
+            headers['Content-type'] = 'Application/json'
+
+        headers['Content-length'] = len(body)
 
     if not full_url:
         full_url = HOST + "api/" + url + params

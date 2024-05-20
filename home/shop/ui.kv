@@ -34,3 +34,6 @@
         icon: "plus"
         md_bg_color: self.theme_cls.accent_color
         pos: dp(20), dp(20)
+        on_release:
+            app.root.get_screen("edit_item_screen").new()
+            app.root.current = "edit_item_screen"

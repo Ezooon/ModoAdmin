@@ -84,6 +84,14 @@
             outline_width: sp(1)
             pos_hint: {'center_y': 0.5}
         MDIconButton:
+            icon: "pencil"
+            pos_hint: {'center_y': 0.5}
+            theme_text_color: "Custom"
+            on_release:
+                app.root.get_screen("edit_item_screen").item = root.item
+                app.root.current = "edit_item_screen"
+
+        MDIconButton:
             id: heart_button
             icon: "heart-outline"
             pos_hint: {'center_y': 0.5}

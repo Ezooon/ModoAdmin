@@ -1,6 +1,7 @@
 from .apirequest import api_request
 from kivymd.app import MDApp
 from database.items import db_items
+from os.path import exists, split
 
 
 class Item:
@@ -18,11 +19,11 @@ class Item:
         self.data = data
         # setting attributes
         self.id = data.get("id") or -1
-        self.name = data.get("name") or "name"
+        self.name = data.get("name") or ""
         self.price = float(data.get("price") or 1)
-        self.description = data.get("description") or "description"
-        self.image = data.get("image") or ""
-        self.add_by = data.get("add_by") or 1
+        self.description = data.get("description") or ""
+        self.image = data.get("image") or "assets/images/loading.jpg"
+        self.add_by = data.get("add_by") or 0
         self.category = data.get("category") or "Nothing"
         self.category_id = Item.Categories.get(self.category)
         self.stock = data.get("stock") or 0
@@ -98,11 +99,64 @@ class Item:
         for item_data in items_data:
             Item(**item_data)
 
+    def get_data(self):
+        data = self.data
+
+        data["id"] = self.id
+        data["name"] = self.name
+        data["price"] = self.price
+        data["description"] = self.description
+        data["image"] = self.image
+        data["add_by"] = self.add_by
+        data["category"] = Item.Categories.get(self.category)
+        data["stock"] = self.stock
+
+        self.data = data
+        return self.data
+
     def favorite(self, on_success=lambda x: None, **kwargs):
         def success(_, data):
             on_success(data)
 
         api_request("account/favorite/" + str(self.id) + "/", on_success=success, method="POST")
+
+    @classmethod
+    def new_item(cls, body, on_success=lambda x: None, **kwargs):
+        def success(_, data, img=None):
+            if img:
+                api_request("items/" + str(data["id"]) + "/image/" + data['name'] + ".jpg/", on_success=success,
+                            headers={'Content-type': 'multipart/form-data'},
+                            body=img, method="PATCH")
+            on_success(data)
+
+        img = None
+        if "image" in body:
+            img_path = body.pop("image")
+            if exists(img_path):
+                with open(img_path, "rb") as f:
+                    img = f.read()
+
+        api_request("items/", on_success=lambda x, y: success(x, y, img),
+                    body=body, method="POST")
+
+    def save(self, body, on_success=lambda x: None, **kwargs):
+        def success(_, data):
+            self.__init__(**data)
+            on_success(self)
+
+        img = None
+        if "image" in body:
+            img_path = body.pop("image")
+            if exists(img_path):
+                with open(img_path, "rb") as f:
+                    img = f.read()
+
+        api_request("items/" + str(self.id) + "/", on_success=success, body=body, method="PATCH")
+
+        if img:
+            api_request("items/" + str(self.id) + "/image/" + self.name + ".jpg/", on_success=success,
+                        headers={'Content-type': 'multipart/form-data'},
+                        body=img, method="PATCH")
 
     def __repr__(self):
         return f"<id: {self.id}, {self.name}>"
